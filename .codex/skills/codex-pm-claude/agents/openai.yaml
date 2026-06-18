@@ -1,0 +1,7 @@
+interface:
+  display_name: "Codex PM Claude"
+  short_description: "Delegate bounded tasks to Claude CLI safely"
+  default_prompt: "Use $codex-pm-claude to delegate this task to Claude CLI while Codex manages review and permissions."
+
+policy:
+  allow_implicit_invocation: true
