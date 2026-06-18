@@ -22,13 +22,15 @@ Always use structured output. Do not rely on bare `claude -p "task"` because def
 Default worker command:
 
 ```bash
-claude --permission-mode auto -p "TASK" --output-format json
+claude --permission-mode auto -p "TASK" --output-format stream-json --verbose
 ```
 
-Verbose diagnostic command:
+Use stream JSON by default so Codex can see progress events and diagnostics during long-running Claude tasks. Reserve non-stream JSON only for exceptional cases where stream output is not usable.
+
+Fallback non-stream command:
 
 ```bash
-claude --permission-mode auto -p "TASK" --output-format stream-json --verbose
+claude --permission-mode auto -p "TASK" --output-format json
 ```
 
 Preferred model behavior:
@@ -60,10 +62,10 @@ Do not reinterpret `FailedToOpenSocket` as a Claude permission denial. It indica
 
 1. Restate the user's goal as task boundaries and acceptance criteria.
 2. Inspect the repository yourself first when local context matters.
-3. Send Claude one focused task using `--output-format json`.
+3. Send Claude one focused task using `--output-format stream-json --verbose`.
 4. Wait for Claude to exit naturally whenever practical. Long periods of no terminal output are acceptable for large tasks; poll periodically and keep the user informed instead of assuming the process is stuck.
 5. If waiting becomes unreasonable, first check harmless local state such as `git status` or target-file timestamps without modifying files. Interrupt Claude only when there is strong evidence of a hang, the user asks to stop, or the command is blocking necessary progress indefinitely.
-6. Parse the `.result` field or read the final JSON result directly.
+6. Read the stream events as diagnostics while Claude is running. After exit, parse the final `result` event and its `.result` field; for fallback non-stream JSON, parse the top-level `.result` field.
 7. Review Claude's answer against local files, git status, and command output.
 8. Apply changes yourself with Codex tools when practical, or send Claude a narrower follow-up task.
 9. Run verification commands appropriate to the task.
@@ -115,7 +117,7 @@ Output:
 
 - Long-running Claude command with no output: keep waiting by default, especially if the task involves multi-file edits or large context. Provide periodic user updates. Do not interrupt solely because a few minutes have passed.
 - Before cancelling a long-running Claude command, inspect non-invasive local evidence when possible and explain why continued waiting is no longer useful.
-- No output from plain `claude -p`: rerun with `--output-format stream-json --verbose`.
+- No output from plain `claude -p`: rerun with the default stream JSON command, `--output-format stream-json --verbose`.
 - `FailedToOpenSocket`: rerun outside sandbox with escalation.
 - Permission denial: summarize the denied action and request user approval only if the action is needed.
 - Claude edits or recommendations look risky: do not apply them; narrow the prompt or handle the change directly.
