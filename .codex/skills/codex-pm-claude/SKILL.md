@@ -37,6 +37,8 @@ Preferred model behavior:
 - Keep Claude tasks small and bounded.
 - Ask Claude to avoid writes unless file modification is explicitly part of the task.
 - Ask Claude to report the exact commands it needs when it cannot proceed.
+- Treat Claude CLI work as potentially long-running, especially for multi-file writing, review, or large-context analysis. Prefer waiting for Claude to exit naturally instead of interrupting only because there has been no output for several minutes.
+- While Claude is running, do not start a second Claude task against the same files and do not edit the same files yourself unless the Claude process has clearly failed, exited, or been explicitly cancelled.
 
 ## Sandbox Rule
 
@@ -59,11 +61,13 @@ Do not reinterpret `FailedToOpenSocket` as a Claude permission denial. It indica
 1. Restate the user's goal as task boundaries and acceptance criteria.
 2. Inspect the repository yourself first when local context matters.
 3. Send Claude one focused task using `--output-format json`.
-4. Parse the `.result` field or read the final JSON result directly.
-5. Review Claude's answer against local files, git status, and command output.
-6. Apply changes yourself with Codex tools when practical, or send Claude a narrower follow-up task.
-7. Run verification commands appropriate to the task.
-8. Summarize what Claude did, what Codex verified, and any residual risk.
+4. Wait for Claude to exit naturally whenever practical. Long periods of no terminal output are acceptable for large tasks; poll periodically and keep the user informed instead of assuming the process is stuck.
+5. If waiting becomes unreasonable, first check harmless local state such as `git status` or target-file timestamps without modifying files. Interrupt Claude only when there is strong evidence of a hang, the user asks to stop, or the command is blocking necessary progress indefinitely.
+6. Parse the `.result` field or read the final JSON result directly.
+7. Review Claude's answer against local files, git status, and command output.
+8. Apply changes yourself with Codex tools when practical, or send Claude a narrower follow-up task.
+9. Run verification commands appropriate to the task.
+10. Summarize what Claude did, what Codex verified, and any residual risk.
 
 ## Permission Gate
 
@@ -109,6 +113,8 @@ Output:
 
 ## Failure Handling
 
+- Long-running Claude command with no output: keep waiting by default, especially if the task involves multi-file edits or large context. Provide periodic user updates. Do not interrupt solely because a few minutes have passed.
+- Before cancelling a long-running Claude command, inspect non-invasive local evidence when possible and explain why continued waiting is no longer useful.
 - No output from plain `claude -p`: rerun with `--output-format stream-json --verbose`.
 - `FailedToOpenSocket`: rerun outside sandbox with escalation.
 - Permission denial: summarize the denied action and request user approval only if the action is needed.
