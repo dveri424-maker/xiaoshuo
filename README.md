@@ -46,13 +46,13 @@ fanqie_draft_upload/
 
 ```bash
 pip install -r fanqie_draft_upload/requirements.txt
-python -m playwright install chromium
+python3 -m playwright install chromium
 ```
 
 ### 首次登录番茄后台
 
 ```bash
-python fanqie_draft_upload/fanqie_publish_browser.py login
+python3 fanqie_draft_upload/fanqie_publish_browser.py login
 ```
 
 脚本会打开浏览器。请手动完成番茄作者后台登录、验证码、短信或滑块验证。
@@ -60,7 +60,7 @@ python fanqie_draft_upload/fanqie_publish_browser.py login
 ### 生成或刷新章节台账
 
 ```bash
-python fanqie_draft_upload/fanqie_prepare_manifest.py
+python3 fanqie_draft_upload/fanqie_prepare_manifest.py
 ```
 
 默认读取根目录 `正文/`，生成：
@@ -74,7 +74,7 @@ fanqie_draft_upload/data/fanqie_publish_state.json
 ### 检查后台页面
 
 ```bash
-python fanqie_draft_upload/fanqie_publish_browser.py check
+python3 fanqie_draft_upload/fanqie_publish_browser.py check
 ```
 
 用于确认脚本能进入对应作品的章节管理/草稿箱页面。
@@ -82,7 +82,7 @@ python fanqie_draft_upload/fanqie_publish_browser.py check
 ### 审核待上传章节
 
 ```bash
-python fanqie_draft_upload/fanqie_publish_browser.py audit
+python3 fanqie_draft_upload/fanqie_publish_browser.py audit
 ```
 
 该命令只读取本地状态台账，输出各状态章节数量和章节范围，不会打开远端保存草稿。
@@ -90,15 +90,15 @@ python fanqie_draft_upload/fanqie_publish_browser.py audit
 ### 保存章节到番茄草稿箱
 
 ```bash
-python fanqie_draft_upload/fanqie_publish_browser.py save-drafts --confirm-save-drafts
+python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --confirm-save-drafts
 ```
 
 常用范围参数：
 
 ```bash
-python fanqie_draft_upload/fanqie_publish_browser.py save-drafts --start 1 --end 10 --confirm-save-drafts
-python fanqie_draft_upload/fanqie_publish_browser.py save-drafts --only-chapter 12 --confirm-save-drafts
-python fanqie_draft_upload/fanqie_publish_browser.py save-drafts --limit 3 --confirm-save-drafts
+python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --start 1 --end 10 --confirm-save-drafts
+python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --only-chapter 12 --confirm-save-drafts
+python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --limit 3 --confirm-save-drafts
 ```
 
 真正写入远端草稿箱前，脚本还会要求输入确认语，例如：
@@ -112,7 +112,7 @@ SAVE FANQIE DRAFTS 1-10
 ### 中断后继续
 
 ```bash
-python fanqie_draft_upload/fanqie_publish_browser.py resume --confirm-save-drafts
+python3 fanqie_draft_upload/fanqie_publish_browser.py resume --confirm-save-drafts
 ```
 
 如果出现 `draft_saving` 遗留状态，应先人工确认番茄后台草稿是否已保存，再手动把对应章节状态改回 `pending` 或标记为 `draft_saved`。
