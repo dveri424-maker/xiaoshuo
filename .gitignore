@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Fanqie draft upload secrets and runtime output
+.secrets/
+/fanqie_draft_upload/logs/
+/fanqie_draft_upload/data/fanqie_publish_state.json
+/fanqie_draft_upload/data/*.html
+/fanqie_draft_upload/data/*_files/
+*.log
+*.tmp
+
+# Legacy/local Fanqie runtime output protection
+logs/fanqie/
+data/*.html
+data/*_files/
+
+# Playwright artifacts
+playwright-report/
+test-results/
+.browser-profiles/
+playwright-profile/
+
+# Generated local state backups
+*.bak
