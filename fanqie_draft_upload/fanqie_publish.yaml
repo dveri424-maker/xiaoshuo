@@ -1,0 +1,99 @@
+# 番茄小说草稿自动化配置
+# 只保存草稿：不要在此配置账号、密码、cookie、token。
+project_root: "."
+chapters_dir: "正文"
+state_file: "fanqie_draft_upload/data/fanqie_publish_state.json"
+book_name: "西部缔造者"
+fanqie_author_url: "https://fanqienovel.com/main/writer/chapter-manage/7650603429173152793&%E8%A5%BF%E9%83%A8%E7%BC%94%E9%80%A0%E8%80%85?type=1"
+
+browser:
+  headless: false
+  profile_dir: "/home/weishida/.local/share/xiaoshuo/fanqie-browser-profile"
+  slow_mo_ms: 150
+  default_timeout_ms: 15000
+  screenshot_dir: "fanqie_draft_upload/logs/screenshots"
+  run_log_dir: "fanqie_draft_upload/logs/runs"
+
+batch:
+  delay_between_chapters_sec: 3
+  jitter_sec: 2
+
+formatting:
+  # 番茄编辑器里原始 Markdown 空行会显示成段落间多空一行；发布前折叠为空行。
+  collapse_blank_lines: true
+
+safety:
+  stop_on_first_error: true
+  forbid_publish_buttons: true
+  screenshot_before_save: true
+  screenshot_after_save: true
+  require_login_manual: true
+  require_save_confirmation: true
+  forbidden_action_keywords:
+    - "发布"
+    - "立即发布"
+    - "定时发布"
+    - "提交审核"
+
+quality:
+  min_char_count: 500
+  max_title_chars: 80
+  forbidden_markers:
+    - "TODO"
+    - "待补"
+    - "大纲"
+    - "细纲"
+    - "【修改】"
+    - "<!--"
+
+# 选择器需要根据番茄作者后台实际页面调整。
+# kind 支持：role, text, label, placeholder, css
+# role 需要额外提供 role 字段；其他通常提供 value。
+selectors:
+  workbench_ready:
+    - {kind: text, value: "章节管理"}
+    - {kind: text, value: "草稿箱"}
+    - {kind: text, value: "新建草稿"}
+    - {kind: text, value: "作品管理"}
+    - {kind: text, value: "工作台"}
+  # 已配置为直接打开本书章节管理页，因此这两个中间导航默认留空。
+  # 如果以后改回作家专区入口，再补回作品名和“章节管理”的选择器。
+  book_entry: []
+  chapter_manage: []
+  draft_tab:
+    - {kind: text, value: "草稿箱"}
+  draft_tip_ok:
+    - {kind: role, role: button, value: "我知道了"}
+    - {kind: text, value: "我知道了"}
+  new_chapter:
+    - {kind: role, role: button, value: "新建草稿"}
+    - {kind: text, value: "新建草稿"}
+    - {kind: role, role: button, value: "新建章节"}
+    - {kind: role, role: button, value: "添加章节"}
+  chapter_no_input:
+    - {kind: css, value: ".serial-editor-title-left input[type='text']"}
+    - {kind: css, value: ".left-input input[type='text']"}
+  title_input:
+    - {kind: placeholder, value: "请输入标题"}
+    - {kind: css, value: "input[placeholder='请输入标题']"}
+    - {kind: css, value: ".serial-editor-title-right input[type='text']"}
+    - {kind: placeholder, value: "请输入章节标题"}
+    - {kind: label, value: "章节标题"}
+  content_editor:
+    - {kind: placeholder, value: "请输入正文"}
+    - {kind: css, value: "[contenteditable='true']"}
+    - {kind: label, value: "正文"}
+    - {kind: css, value: "textarea"}
+  save_draft:
+    - {kind: role, role: button, value: "存草稿"}
+    - {kind: text, value: "存草稿"}
+    - {kind: role, role: button, value: "保存草稿"}
+    - {kind: text, value: "保存草稿"}
+  save_success:
+    - {kind: text, value: "存草稿成功"}
+    - {kind: text, value: "保存成功"}
+    - {kind: text, value: "已保存"}
+    - {kind: text, value: "草稿已保存"}
+  duplicate_title:
+    - {kind: text, value: "标题已存在"}
+    - {kind: text, value: "章节已存在"}
