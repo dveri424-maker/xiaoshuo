@@ -1,28 +1,110 @@
-当前小说正文创作已完成，项目进入去小说 AI 味阶段。
+# 《美恐最严厉的父亲》工作区
 
-工作流由 Codex 作为项目经理，Claude 作为实际修改执行者。
+当前分支是中文美恐无限流幻想小说《美恐最严厉的父亲》。
 
-首先以全权限启动 codex cli:
+项目核心：林扬进入不同欧美恐怖类型副本，入场时不知道具体原型，只能通过现场线索、试错代价和怪物行为逐步识别规则；恐怖压迫成立后，再用荒诞理性和父亲式秩序感反向整改恐怖规则。
+
+## 必读文档
+
+涉及新书设计、卷纲、章节细纲、正文写作、改稿、审稿和文档同步时，先读：
+
+- `CLAUDE.md`
+- `《美恐最严厉的父亲》设定文档.md`
+- `《美恐最严厉的父亲》剧情大纲与写法定稿.md`
+- `.claude/skills/meikong-horror-workflow/SKILL.md`
+
+## 推荐 Skill 组合
+
+- 新书、总纲、卷纲、章节细纲：`webnovel-workflow` + `meikong-horror-workflow`
+- 正文写作、正文续写：`webnovel-workflow` + `meikong-horror-workflow`
+- 正文去 AI 味、恐怖现场感改稿：`novel-de-ai` + `meikong-horror-workflow`
+- Codex 与 Claude 协作讨论或分工：`codex-pm-claude`
+
+当前项目规则以 `CLAUDE.md` 和两份正式设定文档为准。旧分支任务示例不作为当前项目参考。
+
+## 常用任务模板
+
+### 单章正文
+
+```text
+使用 webnovel-workflow 与 meikong-horror-workflow，依据 CLAUDE.md、《美恐最严厉的父亲》设定文档.md、《美恐最严厉的父亲》剧情大纲与写法定稿.md，设计并写作第XXX章。
+
+要求：
+- 林扬入场或推进时不能全知，必须通过现场物件、人物反应、异常变化和试错代价缩小规则范围。
+- 本章先成立恐怖压迫，再让林扬冷静拆解或反制。
+- 至少出现一个可见物件、一个规则线索或代价、一个章末钩子。
+- 林扬可以嘴欠，但必须服务观察、推理、压场或反制。
+- 禁止死亡现场玩梗、规则说明书腔、任务面板替代现场探索。
+```
+
+### 3-5 章连续改稿
+
+```text
+使用 novel-de-ai 与 meikong-horror-workflow，连续审查并修改第XXX-XXX章。
+
+目标：
+- 保留剧情、人物关系、规则线索、死亡/污染代价、章末钩子。
+- 降低 AI 腔、作者解释腔、规则说明书腔、同步反应和短句装感。
+- 强化恐怖现场感、物件触发感、配角真实恐惧和林扬的冷静反制。
+- 检查章节交界是否顺，前章钩子是否接住下一章开场。
+
+完成后列出：
+- 修改文件
+- 修掉的主要问题
+- 仍需人工确认的问题
+- git diff 检查结果
+```
+
+### 只读审查
+
+```text
+使用 meikong-horror-workflow 只读审查以下大纲/章节，不修改文件。
+
+重点检查：
+- 是否有强识别物和欧美恐怖类型外壳。
+- 是否有原创隐藏规则和原作/类型误导。
+- 是否有死亡、不可逆污染、身份替换、记忆缺口或救人付债等代价。
+- 林扬是否误判、付债或救不全。
+- 恐怖是否先成立，黑色幽默是否没有冲淡死亡重量。
+- 系统是否没有用万能黑箱替代现场探索。
+```
+
+### 三轮 Claude 讨论
+
+```text
+$codex-pm-claude 使用“多次 Claude 进程 + 同一个临时讨论文件”的方式，与 Claude 做三轮讨论。任务结束后删除临时讨论文件。
+
+讨论主题：
+【这里写主题】
+
+流程要求：
+1. Codex 先在临时文件中写入任务背景、Codex 初始观点和需要 Claude 反驳的问题。
+2. 第一轮 Claude 读取临时文件，重点反驳 Codex 方案，指出不爽、不稳、不合理、读者可能不买账的地方。
+3. Codex 读取 Claude 反馈后，把接受点、拒绝点、修订方案追加到同一个临时文件。
+4. 第二轮 Claude 读取临时文件，对 Codex 修订方案做二审，继续挑问题并给替代建议。
+5. Codex 再次追加最终判断：哪些采纳、哪些不采纳、最终方案是什么。
+6. 如有必要，第三轮 Claude 只检查最终方案是否还有明显漏洞。
+7. Codex 最后输出：讨论摘要、分歧点、采纳点、最终定稿，并删除临时讨论文件。
+
+限制：
+- 临时讨论文件只用于协作讨论，任务完成后删除。
+- 最终由 Codex 负责判断和落地。
+```
+
+## 提交前检查
+
+常用检查：
 
 ```bash
-codex --sandbox danger-full-access
+git status --short
+git diff --check
 ```
 
-在 Codex CLI 中，可以使用如下提示词分派并行任务：
+旧分支残留词检查应使用临时 pattern 文件或临时命令完成，检查文件不要提交。高危旧分支残留只允许出现在 `CLAUDE.md` 的警示句中。临时讨论文件应在任务结束前删除。
 
-```text
-$codex-pm-claude 继续派发4个任务，分别启动4个 claude: "使用 novel-de-ai skill，并行修改 151-155 章, 156-160 章，161-165 章，166-170 章，要求上下文连贯，不要影响剧情，禁止任何比喻句与作者式总结。"修改完成后，由 codex 检查上下文连贯性并兜底修正，再提交本地仓库。
-```
+## 发布/上传工具
 
-```text
-以之前的工作形式，20章节分成4个任务，依次完成后续的300个章节的修改，每20章节的修改要求如下：$codex-pm-claude 继续派发4个任务，分别启动4个 claude: "使用 novel-de-ai skill，并行修改 151-155 章, 156-160 章，161-165 章，166-170章，要求上下文连贯，不要影响剧情，禁止任何比喻句与作者式总结。"修改完成后，由 codex 检查上下文连贯性并兜底修正，再提交本地仓库。
-```
-
-通过上述流程，可以让 Claude 先完成分段审查与修改，再由 Codex 统一检查工具残留、禁用表达、章节交界和剧情连贯性，最后提交本地仓库。
-
-## 番茄草稿箱上传工具
-
-本项目提供一个浏览器自动化工具，用于把根目录 `正文/` 下的正文章节保存到番茄小说作者后台草稿箱。
+本项目保留番茄草稿箱上传工具，但只在用户明确要求上传或检查上传状态时使用。不要在普通写作、审稿、改稿任务中自动执行上传命令。
 
 功能边界：
 
@@ -31,98 +113,24 @@ $codex-pm-claude 继续派发4个任务，分别启动4个 claude: "使用 novel
 - 浏览器登录状态保存在仓库外：`/home/weishida/.local/share/xiaoshuo/fanqie-browser-profile`。
 - 工具只读取 `正文/` 并写入本地状态台账，不移动、不改写小说创作文件。
 
-相关文件集中在：
+相关文件：
 
 ```text
 fanqie_draft_upload/
-├── fanqie_prepare_manifest.py      # 生成/刷新章节状态台账
-├── fanqie_publish_browser.py       # 打开番茄后台并保存草稿
-├── fanqie_publish.yaml             # 番茄后台地址、选择器、路径与安全配置
-├── requirements.txt                # Playwright/PyYAML 依赖
-└── data/fanqie_publish_state.json  # 本地章节状态台账，不提交
+├── fanqie_prepare_manifest.py
+├── fanqie_publish_browser.py
+├── fanqie_publish.yaml
+├── requirements.txt
+└── data/fanqie_publish_state.json
 ```
 
-### 安装依赖
-
-```bash
-pip install -r fanqie_draft_upload/requirements.txt
-python3 -m playwright install chromium
-```
-
-### 首次登录番茄后台
-
-```bash
-python3 fanqie_draft_upload/fanqie_publish_browser.py login
-```
-
-脚本会打开浏览器。请手动完成番茄作者后台登录、验证码、短信或滑块验证。
-
-### 生成或刷新章节台账
+常用命令：
 
 ```bash
 python3 fanqie_draft_upload/fanqie_prepare_manifest.py
-```
-
-默认读取根目录 `正文/`，生成：
-
-```text
-fanqie_draft_upload/data/fanqie_publish_state.json
-```
-
-如果某章已标记为 `draft_saved`，但本地正文 hash 已变化，脚本会停止并要求先人工确认远端草稿，避免覆盖不明状态。
-
-### 检查后台页面
-
-```bash
-python3 fanqie_draft_upload/fanqie_publish_browser.py check
-```
-
-用于确认脚本能进入对应作品的章节管理/草稿箱页面。
-
-### 审核待上传章节
-
-```bash
 python3 fanqie_draft_upload/fanqie_publish_browser.py audit
-```
-
-该命令只读取本地状态台账，输出各状态章节数量和章节范围，不会打开远端保存草稿。
-
-### 保存章节到番茄草稿箱
-
-```bash
+python3 fanqie_draft_upload/fanqie_publish_browser.py check
 python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --confirm-save-drafts
 ```
 
-常用范围参数：
-
-```bash
-python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --start 1 --end 10 --confirm-save-drafts
-python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --only-chapter 12 --confirm-save-drafts
-python3 fanqie_draft_upload/fanqie_publish_browser.py save-drafts --limit 3 --confirm-save-drafts
-```
-
-真正写入远端草稿箱前，脚本还会要求输入确认语，例如：
-
-```text
-SAVE FANQIE DRAFTS 1-10
-```
-
-确认语不匹配会取消操作。
-
-### 中断后继续
-
-```bash
-python3 fanqie_draft_upload/fanqie_publish_browser.py resume --confirm-save-drafts
-```
-
-如果出现 `draft_saving` 遗留状态，应先人工确认番茄后台草稿是否已保存，再手动把对应章节状态改回 `pending` 或标记为 `draft_saved`。
-
-### 日志、截图与本地状态
-
-运行截图和错误截图默认保存在：
-
-```text
-fanqie_draft_upload/logs/
-```
-
-这些运行产物和本地状态台账已在 `.gitignore` 中忽略，不应提交到仓库。
+真正写入远端草稿箱前，脚本会要求输入确认语；确认语不匹配会取消操作。

@@ -25,6 +25,7 @@
 - `《美恐最严厉的父亲》设定文档.md`
 - `《美恐最严厉的父亲》剧情大纲与写法定稿.md`
 - `.claude/skills/webnovel-workflow/SKILL.md`
+- `.claude/skills/meikong-horror-workflow/SKILL.md`
 
 如果用户明确要求与 Claude/Codex 协作讨论，还应遵守：
 
