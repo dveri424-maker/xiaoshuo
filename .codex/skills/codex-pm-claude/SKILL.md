@@ -71,6 +71,21 @@ Do not reinterpret `FailedToOpenSocket` as a Claude permission denial. It indica
 9. Run verification commands appropriate to the task.
 10. Summarize what Claude did, what Codex verified, and any residual risk.
 
+## Novel Draft Review Commit Rule
+
+For novel正文 creation or revision tasks where Claude writes or edits正文 files, Codex must preserve Claude's draft as a separate local commit before doing final Codex review edits.
+
+Required sequence:
+
+1. Let Claude finish its scoped正文 work.
+2. Inspect `git status` and the relevant diff.
+3. Stage only the正文 files Claude intentionally created or modified, plus any companion writing documents that the user explicitly asked Claude to update.
+4. Commit Claude's raw正文 result before Codex rewrites, polishes, or repairs it. Use a clear local commit message such as `保存 Claude 正文初稿` or `提交 Claude 正文创作结果`.
+5. After that commit exists, Codex reviews the committed version and makes any needed continuity, style, logic, or formatting fixes on top of it.
+6. Verify the final result and, when the task expects a committed finish, create a second commit for Codex's review fixes.
+
+Do not fold Codex's final review edits into Claude's raw draft commit. If unrelated dirty worktree changes, unexpected non-正文 edits, pre-commit failures, or unclear file ownership make the raw Claude commit unsafe, stop and report the blocker instead of mixing changes.
+
 ## Permission Gate
 
 If Claude requests or attempts any of the following, pause and ask the user through Codex's approval flow:
