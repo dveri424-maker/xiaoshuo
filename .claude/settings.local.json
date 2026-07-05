@@ -19,7 +19,8 @@
       "Bash(git -C /home/qwer/other/西部幻想小说/xiaoshuo worktree list --porcelain)",
       "Bash(git -C /home/qwer/other/西部幻想小说/xiaoshuo status --short --branch)",
       "Bash(git -C /home/qwer/other/西部幻想小说/xiaoshuo/.claude/worktrees/agent-a0f8b826ea501a14d status --short --branch)",
-      "Bash(git -C /home/qwer/other/西部幻想小说/xiaoshuo/.claude/worktrees/agent-afab2ca944e314bdb status --short --branch)"
+      "Bash(git -C /home/qwer/other/西部幻想小说/xiaoshuo/.claude/worktrees/agent-afab2ca944e314bdb status --short --branch)",
+      "Skill(code-review)"
     ]
   }
 }
