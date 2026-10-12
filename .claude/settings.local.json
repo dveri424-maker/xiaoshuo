@@ -10,11 +10,7 @@
       "Bash(wc *)",
       "WebSearch",
       "Skill(claude-api)",
-      "Skill(code-review)",
-      "Skill(webnovel-workflow)",
-      "Skill(novel-de-ai)",
-      "Skill(human-prose)",
-      "Skill(laoao-style)"
+      "Skill(code-review)"
     ]
   }
 }
